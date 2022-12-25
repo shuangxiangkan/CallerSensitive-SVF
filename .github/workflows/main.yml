@@ -15,9 +15,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-18.04, macos-11]
-        include:
-          - os: [ubuntu-18.04]
-            sanitizer: address
+#         include:
+#           - os: [ubuntu-18.04]
+#             sanitizer: address
     steps:
       # checkout the repo
       - uses: actions/checkout@v2
