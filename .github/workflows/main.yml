@@ -55,5 +55,6 @@ jobs:
           curl -O https://github.com/shuangxiangkan/CallerSensitive-Tai-e/releases/download/0.0.1/CallerSensitive-Tai-e.jar
           echo ++++++++++++++++++++++++++
           ls -l
+          python --version
  
       
