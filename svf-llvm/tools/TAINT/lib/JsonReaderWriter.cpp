@@ -29,7 +29,7 @@ void JsonReaderWriter::destroy()
 
 void JsonReaderWriter::getJsonAndYmlFilePath(int &argc, char **argv)
 {
-    for (u32_t i = 0; i < argc; ++i)
+    for (int i = 0; i < argc; ++i)
     {
         std::string argument(argv[i]);
         // File is a .json file not a IR file
