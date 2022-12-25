@@ -1,0 +1,54 @@
+name: callersensitive-build
+
+# Triggers the workflow on push or pull request events
+on: [push, pull_request]
+
+# Customize the env variable
+env:
+  SVF_CTIR: 1 
+  SVF_Z3: 1
+  SVF_DIR: $GITHUB_WORKSPACE
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, macos-11]
+        include:
+          - os: [ubuntu-18.04]
+            sanitizer: address
+    steps:
+      # checkout the repo
+      - uses: actions/checkout@v2
+      # setup the environment
+      - name: mac-setup
+        if: runner.os == 'macOS'
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 12.5.1
+      - name: mac-setup-workaround
+        if: runner.os == 'macOS'
+        run: ln -sfn /Applications/Xcode_12.5.1.app /Applications/Xcode.app
+      - name: ubuntu-setup
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install cmake gcc g++ nodejs doxygen graphviz lcov
+      
+      # build-svf
+      - name: build-svf
+        run: |
+          cd $GITHUB_WORKSPACE
+          echo $(pwd)
+          if [ "${{matrix.sanitizer}}" != "" ]; then export SVF_SANITIZER="${{matrix.sanitizer}}"; fi
+          if [ "$RUNNER_OS" == "Linux" ] && [ "${{matrix.sanitizer}}" == "" ]; then export SVF_COVERAGE=1; fi
+          git clone "https://github.com/SVF-tools/Test-Suite.git";
+          source ${{github.workspace}}/build.sh
+
+      - name: just for test
+        run: echo Hello, world!
+ 
+      
