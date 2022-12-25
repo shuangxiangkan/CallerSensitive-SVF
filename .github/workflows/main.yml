@@ -50,10 +50,10 @@ jobs:
 
       - name: just for test
         run: |
-          ll
+          ls -l
           echo ++++++++++++++++++++++++++
-          https://github.com/shuangxiangkan/CallerSensitive-Tai-e/releases/download/0.0.1/CallerSensitive-Tai-e.jar
+          curl -O https://github.com/shuangxiangkan/CallerSensitive-Tai-e/releases/download/0.0.1/CallerSensitive-Tai-e.jar
           echo ++++++++++++++++++++++++++
-          ll
+          ls -l
  
       
