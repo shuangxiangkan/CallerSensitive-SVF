@@ -1,97 +1,86 @@
-cmake_minimum_required(VERSION 3.4.3)
-if (DEFINED LLVM_DIR)
-        set(ENV{LLVM_DIR} "${LLVM_DIR}")
-    endif()
-    if (DEFINED ENV{LLVM_DIR})
-        # We need to match the build environment for LLVM:
-        # In particular, we need C++11 and the -fno-rtti flag
-        set(CMAKE_CXX_STANDARD 14)
-	if(CMAKE_BUILD_TYPE MATCHES "Debug")
-		set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++14 -O0 -fno-rtti -Wno-deprecated")
-	else()
-		set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++14 -O3 -fno-rtti -Wno-deprecated")
-	endif()
-	set(CMAKE_C_FLAGS "-fPIC")
+cmake_minimum_required(VERSION 3.13.4)
 
-find_package(LLVM REQUIRED CONFIG)
-    
-    list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
-    include(AddLLVM)
+project("SVF")
 
-    add_definitions(${LLVM_DEFINITIONS})
-    include_directories(${LLVM_INCLUDE_DIRS})
+configure_file(${CMAKE_SOURCE_DIR}/.config.in
+               ${CMAKE_BINARY_DIR}/include/Util/config.h)
 
-else()
-    message(FATAL_ERROR "\
-WARNING: The LLVM_DIR var was not set (required for an out-of-source build)!\n\
-Please set this to environment variable to point to the LLVM build directory\
-(e.g. on linux: export LLVM_DIR=/path/to/llvm/build/dir)")
+# We need to match the build environment for LLVM: In particular, we need C++14
+# and the -fno-rtti flag
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# add -std=gnu++14
+set(CMAKE_CXX_EXTENSIONS ON)
+
+add_compile_options("-fno-rtti")
+add_compile_options("-fno-exceptions")
+
+# Treat compiler warnings as errors
+add_compile_options("-Werror" "-Wall")
+
+# Keep assertions enabled if requested
+option(SVF_ENABLE_ASSERTIONS "Always enable assertions")
+if(SVF_ENABLE_ASSERTIONS)
+  add_compile_options("-UNDEBUG")
 endif()
 
-if (EXISTS "${SVF_DIR}")
-else()
-    set(SVF_DIR $ENV{SVF_DIR})
-    if(EXISTS "${SVF_DIR}")
-    else()
-    message(FATAL_ERROR "\
-WARNING: The SVF_DIR var was not set (required for an out-of-source build)!\n\
-Please set this to environment variable to point to the SVF_DIR directory or set this variable to cmake configuration\n
-(e.g. on linux: export SVF_DIR=/path/to/SVF/dir) \n or \n \n(make the project via: cmake -DSVF_DIR=your_path_to_SVF) ")
-    endif()
+option(SVF_COVERAGE "Create coverage build")
+if(SVF_COVERAGE OR DEFINED ENV{SVF_COVERAGE})
+  add_compile_options("-fprofile-arcs" "-ftest-coverage")
+  add_link_options("-fprofile-arcs" "-ftest-coverage")
+  message(STATUS "Enable coverage")
 endif()
 
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
-    MESSAGE (STATUS "building SVF in debug mode")
-    if (EXISTS "${SVF_DIR}/Debug-build")
-        set(SVF_BIN "${SVF_DIR}/Debug-build")
-    else()
-        set(SVF_BIN "${SVF_DIR}/Release-build")
-    endif()
-else()
-    MESSAGE (STATUS "building SVF in release mode")
-    set(SVF_BIN "${SVF_DIR}/Release-build")
-endif()
-set(SVF_HEADER "${SVF_DIR}/svf/include")
-set(SVF_LLVM_HEADER "${SVF_DIR}/svf-llvm/include")
-set(SVF_LIB "${SVF_BIN}/svf-llvm/libSvfLLVM.a")
-set(SVF_BIN_HEADER "${SVF_BIN}/include")
-include_directories(${SVF_HEADER}
-                    ${SVF_LLVM_HEADER}
-                    ${SVF_BIN_HEADER})
-
-#set z3 env
-if (DEFINED Z3_DIR)
-    set(ENV{Z3_DIR} "${Z3_DIR}")
-endif()
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
-    if(EXISTS "${Z3_DIR}/src")
-        find_package(Z3 REQUIRED CONFIG)
-        include_directories(${Z3_CXX_INCLUDE_DIRS})
-    else()
-        find_library(Z3_LIBRARIES NAMES libz3.a libz3.so
-                HINTS $ENV{Z3_DIR}
-                PATH_SUFFIXES bin)
-        find_path(Z3_INCLUDES NAMES z3++.h
-                HINTS $ENV{Z3_DIR}
-                PATH_SUFFIXES include z3)
-        if(NOT Z3_LIBRARIES OR NOT Z3_INCLUDES)
-            message(FATAL_ERROR "Z3 not found!")
-        endif()
-        include_directories(${Z3_INCLUDES})
-        LINK_DIRECTORIES(${Z3_DIR}/bin)
-    endif()
-else()
-    find_library(Z3_LIBRARIES NAMES libz3.a libz3.so
-            HINTS $ENV{Z3_DIR}
-            PATH_SUFFIXES bin)
-    find_path(Z3_INCLUDES NAMES z3++.h
-            HINTS $ENV{Z3_DIR}
-            PATH_SUFFIXES include z3)
-    if(NOT Z3_LIBRARIES OR NOT Z3_INCLUDES)
-        message(FATAL_ERROR "Z3 not found!")
-    endif()
-    include_directories(${Z3_INCLUDES})
-    LINK_DIRECTORIES(${Z3_DIR}/bin)
+set(SVF_SANITIZE
+    ""
+    CACHE STRING "Create sanitizer build (address)")
+if(SVF_SANITIZE STREQUAL "address")
+  add_compile_options("-fno-omit-frame-pointer" "-fsanitize=address")
+  add_link_options("-fsanitize=address")
+  message(STATUS "Sanitizer build: ${SVF_SANITIZE}")
+elseif(SVF_SANITIZE STREQUAL "thread")
+  add_compile_options("-fsanitize=thread")
+  add_link_options("-fsanitize=thread")
+  message(STATUS "Sanitizer build: ${SVF_SANITIZE}")
+elseif(NOT SVF_SANITIZE STREQUAL "")
+  message(ERROR "Unknown sanitizer type: ${SVF_SANITIZE}")
 endif()
 
-add_subdirectory(src)
+find_library(
+  Z3_LIBRARIES
+  NAMES z3
+  HINTS ${Z3_DIR} ENV Z3_DIR
+  PATH_SUFFIXES bin lib)
+find_path(
+  Z3_INCLUDES
+  NAMES z3++.h
+  HINTS ${Z3_DIR} ENV Z3_DIR
+  PATH_SUFFIXES include z3)
+if(NOT Z3_LIBRARIES OR NOT Z3_INCLUDES)
+  message(FATAL_ERROR "Z3 not found!")
+endif()
+message(STATUS "Found Z3: ${Z3_LIBRARIES}")
+message(STATUS "Z3 include dir: ${Z3_INCLUDES}")
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/svf/include
+                    ${CMAKE_BINARY_DIR}/include ${Z3_INCLUDES})
+
+# checks if the test-suite is present, if it is then build bc files and add
+# testing to cmake build
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Test-Suite")
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Test-Suite)
+  enable_testing()
+  add_subdirectory(Test-Suite)
+  include(CTest)
+endif()
+
+add_subdirectory(svf)
+add_subdirectory(svf-llvm)
+
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/svf/include/
+            ${CMAKE_CURRENT_SOURCE_DIR}/svf-llvm/include/
+  COMPONENT devel
+  DESTINATION include/svf
+  FILES_MATCHING
+  PATTERN "**/*.h")
