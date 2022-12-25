@@ -38,17 +38,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install cmake gcc g++ nodejs doxygen graphviz lcov
       
-      # build-svf
-      - name: build-svf
-        run: |
-          cd $GITHUB_WORKSPACE
-          echo $(pwd)
-          if [ "${{matrix.sanitizer}}" != "" ]; then export SVF_SANITIZER="${{matrix.sanitizer}}"; fi
-          if [ "$RUNNER_OS" == "Linux" ] && [ "${{matrix.sanitizer}}" == "" ]; then export SVF_COVERAGE=1; fi
-          # git clone "https://github.com/SVF-tools/Test-Suite.git";
-          source ${{github.workspace}}/build.sh
+#       # build-svf
+#       - name: build-svf
+#         run: |
+#           cd $GITHUB_WORKSPACE
+#           echo $(pwd)
+#           if [ "${{matrix.sanitizer}}" != "" ]; then export SVF_SANITIZER="${{matrix.sanitizer}}"; fi
+#           if [ "$RUNNER_OS" == "Linux" ] && [ "${{matrix.sanitizer}}" == "" ]; then export SVF_COVERAGE=1; fi
+#           # git clone "https://github.com/SVF-tools/Test-Suite.git";
+#           source ${{github.workspace}}/build.sh
 
       - name: just for test
-        run: echo Hello, world!
+        run: |
+          ls -l
+          echo ++++++++++++++++++++++++++
+          curl -O https://github.com/shuangxiangkan/CallerSensitive-Tai-e/releases/download/0.0.1/CallerSensitive-Tai-e.jar
+          echo ++++++++++++++++++++++++++
+          ls -l
+          python --version
  
       
