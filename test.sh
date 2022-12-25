@@ -13,17 +13,17 @@ Yellow_Warnning(){
 
 }
 
-Red_Error(){
-        echo '=================================================';
+# Red_Error(){
+#         echo '=================================================';
 
-        printf '\033[1;31;40m[error]  %b\033[0m\n' "$1";
+#         printf '\033[1;31;40m[error]  %b\033[0m\n' "$1";
 
-        exit 1;
+#         exit 1;
 
-}
+# }
 
 Green_Success "成功"
 
 Yellow_Warnning "警告"
 
-Red_Error "错误"
+# Red_Error "错误"
