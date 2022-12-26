@@ -56,6 +56,7 @@ jobs:
           echo ++++++++++++++++++++++++++
           ls -l
           python --version
+          java -version
           source ./test.sh
  
       
