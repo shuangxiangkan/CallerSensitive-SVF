@@ -55,13 +55,14 @@ jobs:
       - name: just for test
         run: |
           ls -l
+          java -version
           echo ++++++++++++++++++++++++++
           curl -O https://github.com/shuangxiangkan/CallerSensitive-Tai-e/releases/download/0.0.1/CallerSensitive-Tai-e.jar
           java -cp CallerSensitive-tai-e.jar pascal.taie.Main -cp SummaryTest-1.0-SNAPSHOT.jar -m Main -java 8 -a pta=taint-config:./test/taint-config.yml;action:dump;only-app:true;action-file:./test/result.txt
           echo ++++++++++++++++++++++++++
           ls -l
           python --version
-          java -version
+          # java -version
           # source ./test.sh
  
       
