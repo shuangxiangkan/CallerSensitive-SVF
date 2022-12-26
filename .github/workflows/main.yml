@@ -61,7 +61,7 @@ jobs:
           wget https://github.com/shuangxiangkan/CallerSensitive-Tai-e/releases/download/0.0.1/CallerSensitive-tai-e.jar
           echo ++++++++++++++++++++++++++
           ls -l
-          java -cp ./CallerSensitive-tai-e.jar pascal.taie.Main -cp SummaryTest-1.0-SNAPSHOT.jar Main -java 8 -a "pta=taint-config:./test/taint-config.yml;action:dump;only-app:true;"
+          java -cp ./CallerSensitive-tai-e.jar pascal.taie.Main -cp SummaryTest-1.0-SNAPSHOT.jar Main -java 8 -a "pta=taint-config:./test/taint-config.yml"
           echo ++++++++++++++++++++++++++
           ls -l
           python --version
