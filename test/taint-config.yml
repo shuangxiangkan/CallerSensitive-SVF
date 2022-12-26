@@ -1,14 +1,7 @@
 sources:
-  - { method: "<org.example.SourceSink: java.lang.String source()>", type: "java.lang.String" }
-  - { method: "<org.example.SourceSink: java.lang.String sourceAndSink(java.lang.String,java.lang.String)>", type: "java.lang.String" }
-  - { method: "<org.example.Main: java.lang.String source()>", type: "java.lang.String" }
+  - { method: "<Main: java.lang.String source()>", type: "java.lang.String" }
 
 sinks:
-  - { method: "<org.example.SourceSink: void sink(java.lang.String)>", index: 0 }
-  - { method: "<org.example.SourceSink: void sink(java.lang.String,int)>", index: 0 }
-  - { method: "<org.example.SourceSink: void sink(java.lang.String,java.lang.String)>", index: 1 }
-  - { method: "<org.example.SourceSink: java.lang.String sourceAndSink(java.lang.String,java.lang.String)>", index: 0 }
-  - { method: "<org.example.Main: java.lang.String nativeSink(java.lang.String)>", index: 0 }
   - { method: "<org.example.Main: void sink(java.lang.String)>", index: 0 }
 
 
