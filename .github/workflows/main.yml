@@ -66,8 +66,7 @@ jobs:
           java -cp ./CallerSensitive-tai-e.jar pascal.taie.Main -cp ./test/SummaryTest-1.0-SNAPSHOT.jar -m Main -java 8 -a "pta=taint-config:./test/taint-config.yml;action:dump;only-app:true;"
           echo ++++++++++++++++++++++++++
           ls -l
-          python --version
-          # java -version
+          cat ./CallerSensitiveSummary.json
           # source ./test.sh
  
       
