@@ -59,6 +59,7 @@ jobs:
           java -version
           echo ++++++++++++++++++++++++++
           wget https://github.com/shuangxiangkan/CallerSensitive-Tai-e/releases/download/0.0.1/CallerSensitive-tai-e.jar
+          git --version
           git submodule update --init --recursive
           echo ++++++++++++++++++++++++++
           ls -l
