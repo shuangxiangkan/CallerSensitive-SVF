@@ -1,29 +1,18 @@
 #!/bin/bash
-Green_Success(){
-        echo '=================================================';
 
-        printf '\033[1;32;40m[success]  %b\033[0m\n' "$1";
+result="Detected 0 taint flow(s):"
+resultTxt=./result.txt
 
-}
+ if [ ! -f $resultTxt ];then
+    echo "result.txt does not exist"
+    printf '\033[1;31;40m[fail]%b\033[0m\n';
 
-Yellow_Warnning(){
-        echo '=================================================';
-
-        printf '\033[1;33;40m[warnning]  %b\033[0m\n' "$1";
-
-}
-
-# Red_Error(){
-#         echo '=================================================';
-
-#         printf '\033[1;31;40m[error]  %b\033[0m\n' "$1";
-
-#         exit 1;
-
-# }
-
-Green_Success "成功"
-
-Yellow_Warnning "警告"
-
-# Red_Error "错误"
+  else
+    passresult=$(grep "$result" $resultTxt)
+    if [ -n "$passresult" ];then
+        echo "result is wrong"
+        printf '\033[1;31;40m[fail]%b\033[0m\n';
+    else
+        printf '\033[1;32;40m[success]%b\033[0m\n';
+    fi
+ fi
