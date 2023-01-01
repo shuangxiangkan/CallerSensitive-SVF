@@ -2,7 +2,7 @@ sources:
   - { method: "<Main: java.lang.String source()>", type: "java.lang.String" }
 
 sinks:
-  - { method: "<org.example.Main: void sink(java.lang.String)>", index: 0 }
+  - { method: "<Main: void sink(java.lang.String)>", index: 0 }
 
 
 transfers:
