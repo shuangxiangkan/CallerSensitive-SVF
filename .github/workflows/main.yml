@@ -75,6 +75,6 @@ jobs:
           ls -l
           echo ++++++++++++++++++++++++++
           cat ./result.txt
-          source ./test.sh
+          # source ./test.sh
  
       
