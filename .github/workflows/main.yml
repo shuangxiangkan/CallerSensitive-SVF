@@ -72,6 +72,9 @@ jobs:
           cat ./test/taint-config.yml
           echo ++++++++++++++++++++++++++
           java -cp ./CallerSensitive-tai-e.jar pascal.taie.Main -cp ./test/SummaryTest-1.0-SNAPSHOT.jar -m Main -java 8 -a "pta=taint-config:./test/taint-config.yml;action:dump;only-app:true;action-file:./result.txt"
+          ls -l
+          echo ++++++++++++++++++++++++++
+          cat ./result.txt
           source ./test.sh
  
       
