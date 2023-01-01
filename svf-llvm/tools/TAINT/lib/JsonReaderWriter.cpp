@@ -90,6 +90,58 @@ cJSON *JsonReaderWriter::parseCallerJson(std::string path)
 }
 
 
+// // void JsonReaderWriter::getCallees(std::string jsonPath)
+// std::vector<JsonReaderWriter::nativeCallee> JsonReaderWriter::getCallees(std::string jsonPath)
+// {
+
+//     std::vector<nativeCallee> callees;
+
+//     cJSON *root = parseCallerJson(jsonPath);
+//     while (root)
+//     {
+//         cJSON *child = root->child;
+//         while (child)
+//         {
+//             JsonReaderWriter::nativeCallee callee;
+//             cJSON *item = child->child;
+//             while (item)
+//             {
+//                 if (strstr(item->string, "nativeMethodName"))
+//                 {
+//                     callee.nativeMethodName = item->valuestring;
+//                 }
+//                 else if (strstr(item->string, "retType"))
+//                 {
+//                     callee.retType = item->valuestring;
+//                 }
+//                 else if (strstr(item->string, "argsType"))
+//                 {
+//                     cJSON *obj = item->child;
+//                     while (obj)
+//                     {
+//                         callee.argsType.push_back(obj->valuestring);
+//                         obj = obj->next;
+//                     }    
+//                 }
+//                 else if (strstr(item->string, "taintedArgsPos"))
+//                 {
+//                     cJSON *obj = item->child;
+//                     while (obj)
+//                     {
+//                         callee.taintedArgs.push_back(obj->valueint);
+//                         obj = obj->next;
+//                     }         
+//                 }
+//                 item = item->next;
+//             }
+//             child = child->next;
+//             callees.push_back(callee);
+//         }
+//         root = root->next;
+//     }
+//     return callees;
+// }
+
 // void JsonReaderWriter::getCallees(std::string jsonPath)
 std::vector<JsonReaderWriter::nativeCallee> JsonReaderWriter::getCallees(std::string jsonPath)
 {
@@ -99,44 +151,39 @@ std::vector<JsonReaderWriter::nativeCallee> JsonReaderWriter::getCallees(std::st
     cJSON *root = parseCallerJson(jsonPath);
     while (root)
     {
-        cJSON *child = root->child;
-        while (child)
+        JsonReaderWriter::nativeCallee callee;
+        cJSON *item = root->child;
+        while (item)
         {
-            JsonReaderWriter::nativeCallee callee;
-            cJSON *item = child->child;
-            while (item)
+            if (strstr(item->string, "nativeMethodName"))
             {
-                if (strstr(item->string, "nativeMethodName"))
-                {
-                    callee.nativeMethodName = item->valuestring;
-                }
-                else if (strstr(item->string, "retType"))
-                {
-                    callee.retType = item->valuestring;
-                }
-                else if (strstr(item->string, "argsType"))
-                {
-                    cJSON *obj = item->child;
-                    while (obj)
-                    {
-                        callee.argsType.push_back(obj->valuestring);
-                        obj = obj->next;
-                    }    
-                }
-                else if (strstr(item->string, "taintedArgsPos"))
-                {
-                    cJSON *obj = item->child;
-                    while (obj)
-                    {
-                        callee.taintedArgs.push_back(obj->valueint);
-                        obj = obj->next;
-                    }         
-                }
-                item = item->next;
+                callee.nativeMethodName = item->valuestring;
             }
-            child = child->next;
-            callees.push_back(callee);
+            else if (strstr(item->string, "retType"))
+            {
+                callee.retType = item->valuestring;
+            }
+            else if (strstr(item->string, "argsType"))
+            {
+                cJSON *obj = item->child;
+                while (obj)
+                {
+                    callee.argsType.push_back(obj->valuestring);
+                    obj = obj->next;
+                }    
+            }
+            else if (strstr(item->string, "taintedArgsPos"))
+            {
+                cJSON *obj = item->child;
+                while (obj)
+                {
+                    callee.taintedArgs.push_back(obj->valueint);
+                    obj = obj->next;
+                }         
+            }
+            item = item->next;
         }
+        callees.push_back(callee);
         root = root->next;
     }
     return callees;
