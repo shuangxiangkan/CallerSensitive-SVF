@@ -14,7 +14,7 @@ resultTxt=./result.txt;
         echo "result is wrong";
         printf '\033[1;31;40m[fail]%b\033[0m\n';
         exit 1;
-    else
-        printf '\033[1;32;40m[success]%b\033[0m\n';
+    # else
+    #     printf '\033[1;32;40m[success]%b\033[0m\n';
     fi
  fi
