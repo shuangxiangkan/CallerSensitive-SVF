@@ -1,0 +1,9 @@
+sources:
+  - { method: "<Main: java.lang.String source()>", type: "java.lang.String" }
+
+sinks:
+  - { method: "<Main: void sink(java.lang.String)>", index: 0 }
+
+
+transfers:
+ - { method: "<Main: java.lang.String Java_com_gdut_base64_base64_base64encode(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }

@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"Java_org_whispersystems_curve25519_NativeCurve25519Provider_generatePrivateKey",
+	"retType":"byte[]",
+	"argsType":["byte[]"],
+	"taintedArgsPos":[0]	
+}

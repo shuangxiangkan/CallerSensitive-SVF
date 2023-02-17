@@ -5238,7 +5238,7 @@
         "overwrite_app_function": 0,
         "memcpy_like":  ["0", "1"],
         "CopyStmt": {
-			"src": "Arg0",
+			"src": "Arg1",
 			"dst": "Ret"
 		}
     },
@@ -5512,7 +5512,7 @@
     },
     "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1EPKcRKS3_":{
         "return":  "void",
-        "arguments":  "(char const*, std::allocator<char> const&)",
+        "arguments":  "(%email, i8* %call, %class._jstring* nonnull align 1 dereferenceable(1) %ref.tmp)",
         "type": "CPP_EFT_A0R_A1",
         "overwrite_app_function": 0,
         "StoreStmt": {
@@ -5703,5 +5703,65 @@
             "dst": "Ret",
             "offset": "0"
         }
+    },
+    "_ZN7_JNIEnv17GetStringUTFCharsEP8_jstringPh":{
+        "return":  "i8*",
+        "arguments":  "(%struct._JNIEnv* %0, %class._jstring* %1, i8* %2)",
+        "type": "CPP_EFT_DYNAMIC_CAST",
+        "overwrite_app_function": 1,
+        "CopyStmt": {
+			"src": "Arg1",
+			"dst": "Ret"
+		}
+    },
+    "_ZN7_JNIEnv16CallObjectMethodEP8_jobjectP10_jmethodIDz":{
+        "return":  "%class._jobject*",
+        "arguments":  "(%struct._JNIEnv* %0, %class._jobject* %1, %struct._jmethodID* %2)",
+        "type": "CPP_EFT_DYNAMIC_CAST",
+        "overwrite_app_function": 1,
+        "CopyStmt": {
+			"src": "Arg1",
+			"dst": "Ret"
+		}
+    },
+    "_ZN7JNIEnv_17GetStringUTFCharsEP8_jstringPh":{
+        "return":  "i8*",
+        "arguments":  "(%struct.JNIEnv_* %this, %class._jstring* %str, i8* %isCopy)",
+        "type": "CPP_EFT_DYNAMIC_CAST",
+        "overwrite_app_function": 1,
+        "CopyStmt": {
+			"src": "Arg1",
+			"dst": "Ret"
+		}
+    },
+    "_ZN7JNIEnv_12NewStringUTFEPKc":{
+        "return":  "class._jstring*",
+        "arguments":  "(%struct.JNIEnv_* %this, i8* %utf)",
+        "type": "CPP_EFT_DYNAMIC_CAST",
+        "overwrite_app_function": 1,
+        "CopyStmt": {
+			"src": "Arg1",
+			"dst": "Ret"
+		}
+    },
+    "_Z12base64encodePKc":{
+        "return":  "i8*",
+        "arguments":  "(i8*)",
+        "type": "CPP_EFT_DYNAMIC_CAST",
+        "overwrite_app_function": 1,
+        "CopyStmt": {
+			"src": "Arg0",
+			"dst": "Ret"
+		}
+    },
+    "_ZN7JNIEnv_20GetByteArrayElementsEPPS_P11_jbyteArrayPh":{
+        "return":  "i8*",
+        "arguments":  "(%struct.JNIEnv_* %this, %struct.JNIEnv_** %env, %class._jbyteArray* %array, i8* %isCopy)",
+        "type": "CPP_EFT_DYNAMIC_CAST",
+        "overwrite_app_function": 1,
+        "CopyStmt": {
+			"src": "Arg2",
+			"dst": "Ret"
+		}
     }
 }

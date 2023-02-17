@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"Java_com_hzy_lib7z_Z7Extractor_nExtractFile",
+	"retType":"",
+	"argsType":[],
+	"taintedArgsPos":[0]	
+}

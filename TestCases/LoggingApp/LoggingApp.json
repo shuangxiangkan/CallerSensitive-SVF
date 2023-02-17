@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"Java_com_cagataykolus_loggingapp_NativeLibrary_logError",
+	"retType":"",
+	"argsType":[],
+	"taintedArgsPos":[0]	
+}

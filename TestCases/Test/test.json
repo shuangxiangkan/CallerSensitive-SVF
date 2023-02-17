@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"_Z40Java_com_blueberry_media_PublishJni_initNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEi",
+	"retType":"",
+	"argsType":[],
+	"taintedArgsPos":[]	
+}

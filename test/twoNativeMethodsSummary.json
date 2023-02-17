@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"nativeTransfer",
+	"retType":"java.lang.String",
+	"argsType":["java.lang.String","java.lang.String"],
+	"taintedArgsPos":[0,1]	
+}

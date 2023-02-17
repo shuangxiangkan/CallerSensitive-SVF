@@ -218,10 +218,6 @@ public:
     {
         sources.insert(node);
     }
-    inline void clearSources()
-    {
-        sources.clear();
-    }
     inline const SVFGNodeSet& getSinks() const
     {
         return sinks;
@@ -237,10 +233,6 @@ public:
     inline void addToSinks(const SVFGNode* node)
     {
         sinks.insert(node);
-    }
-    inline void clearSinks()
-    {
-        sinks.clear();
     }
     //@}
 

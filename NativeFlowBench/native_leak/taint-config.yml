@@ -1,0 +1,15 @@
+sources:
+  - { method: "<Main: java.lang.String source()>", type: "java.lang.String" }
+
+sinks:
+  - { method: "<Main: void sink(java.lang.String)>", index: 0 }
+
+
+transfers:
+ - { method: "<Main: void Java_org_arguslab_native_1leak_MainActivity_send(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: void Java_org_arguslab_native_1leak_MainActivity_send(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: void Java_org_arguslab_native_1leak_MainActivity_send(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: void Java_org_arguslab_native_1leak_MainActivity_send(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: void Java_org_arguslab_native_1leak_MainActivity_send(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: void Java_org_arguslab_native_1leak_MainActivity_send(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: void Java_org_arguslab_native_1leak_MainActivity_send(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }

@@ -1,0 +1,7 @@
+{
+	"nativeMethodName":"Java_org_arguslab_native_1leak_MainActivity_send",
+	"retType":"void",
+	"argsType":["java.lang.String"],
+	"taintedArgsPos":[0]	
+}
+

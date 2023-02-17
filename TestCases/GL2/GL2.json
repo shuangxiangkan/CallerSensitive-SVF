@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"Java_com_android_gl2_GL2JNILib_init",
+	"retType":"",
+	"argsType":[],
+	"taintedArgsPos":[1]	
+}

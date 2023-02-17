@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"Java_org_wordpress_emailchecker_EmailChecker_suggestDomainCorrectionNative",
+	"retType":"",
+	"argsType":[],
+	"taintedArgsPos":[0]	
+}

@@ -6,3 +6,7 @@ sinks:
 
 
 transfers:
+ - { method: "<Main: java.lang.String nativeTransfer(java.lang.String,java.lang.String)>", from: 1, to: result, type: "java.lang.String" }
+ - { method: "<Main: java.lang.String nativeTransfer(java.lang.String,java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: java.lang.String nativeTransfer(java.lang.String,java.lang.String)>", from: 1, to: result, type: "java.lang.String" }
+ - { method: "<Main: java.lang.String nativeTransfer(java.lang.String,java.lang.String)>", from: 0, to: result, type: "java.lang.String" }

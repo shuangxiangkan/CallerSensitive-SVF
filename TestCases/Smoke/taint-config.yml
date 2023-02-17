@@ -1,0 +1,9 @@
+sources:
+  - { method: "<Main: java.lang.String source()>", type: "java.lang.String" }
+
+sinks:
+  - { method: "<Main: void sink(java.lang.String)>", index: 0 }
+
+
+transfers:
+

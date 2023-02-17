@@ -1,0 +1,6 @@
+{
+	"nativeMethodName":"Java_com_gdut_base64_base64_base64encode",
+	"retType":"java.lang.String",
+	"argsType":["java.lang.String"],
+	"taintedArgsPos":[0]	
+}
