@@ -2,5 +2,5 @@
 	"nativeMethodName":"Java_com_rprata_socketjni_socket_SocketResource_nativeStartLocalServer",
 	"retType":"java.lang.String",
 	"argsType":["java.lang.String", "java.lang.String"],
-	"taintedArgsPos":[1]	
+	"taintedArgsPos":[]	
 }

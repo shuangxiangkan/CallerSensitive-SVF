@@ -23,6 +23,7 @@ public:
     typedef NodeBS SVFGNodeBS;
     typedef std::vector<JsonReaderWriter::nativeCallee> NativeCalleeList;
     typedef JsonReaderWriter::nativeCallee NativeCallee;
+    typedef Map<std::string, std::vector<int>> ParamTypeToPos;
 
     std::vector<std::string> sinkFuns = {
         // "_ZN7_JNIEnv17GetStringUTFCharsEP8_jstringPh",
@@ -85,6 +86,7 @@ protected:
     void reportRetTaint(const SVFGNode* src);
     void reportFunTaint(const SVFGNodeSet& sinks);
     void reportTaint(const SVFGNode* src, const SVFGNodeSet& sinks);
+    void reportTaint2(const SVFGNode* src, const SVFGNodeSet& sinks);
     //@}
 
     inline void addSrcToParaPos(const SVFGNode* src, u32_t pos)
@@ -116,6 +118,7 @@ private:
     SVFGNodeToFunMap sinkToFun;
     NativeCalleeList nativeCalleesVec;
     NativeCallee currentNativeCallee;
+    ParamTypeToPos paramTypeToPosMap;
 };
 
 } // End namespace SVF

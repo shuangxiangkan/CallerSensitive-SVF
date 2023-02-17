@@ -2,5 +2,5 @@
 	"nativeMethodName":"Java_com_mingyuans_smoke_android_file_AndroidFilePrinter_jniPrintln",
 	"retType":"",
 	"argsType":[],
-	"taintedArgsPos":[]	
+	"taintedArgsPos":[1]	
 }

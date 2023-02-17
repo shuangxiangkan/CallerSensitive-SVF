@@ -7,3 +7,4 @@ sinks:
 
 transfers:
  - { method: "<Main: java.lang.String Java_com_gdut_base64_base64_base64encode(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }
+ - { method: "<Main: java.lang.String Java_com_gdut_base64_base64_base64encode(java.lang.String)>", from: 0, to: result, type: "java.lang.String" }

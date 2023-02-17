@@ -30,12 +30,26 @@ void TaintChecker::initSrcs()
                 const PAGNode *fun_arg = *funArgIt;
                 if (currentNativeCallee.taintedArgs.size() == 0)
                 {
-                    if (fun_arg->isPointer())
+                    if (fun_arg->isPointer() && index >= 2)
                     {
                         const SVFGNode* node = svfg->getFormalParmVFGNode(fun_arg);
                         // std::cout << node->getValue()->getType()->toString() << std::endl;
                         addToSources(node);
                         addSrcToParaPos(node, index-2);
+                        
+                        std::string paraType = node->getValue()->getType()->toString();
+                        if (paramTypeToPosMap.find(paraType) != paramTypeToPosMap.end())
+                        {
+                            paramTypeToPosMap[paraType].push_back(index - 2);
+                        }
+                        else
+                        {
+                            std::vector<int> pos;
+                            pos.push_back(index - 2);
+                            paramTypeToPosMap[paraType] = pos;
+                        }
+
+                        
                     }
                 }
                 else if (fun_arg->isPointer() && std::find(currentNativeCallee.taintedArgs.begin(), currentNativeCallee.taintedArgs.end(), index - 2) != currentNativeCallee.taintedArgs.end())
@@ -76,7 +90,6 @@ void TaintChecker::initSnks()
     for(SVFIR::CSToArgsListMap::iterator it = pag->getCallSiteArgsMap().begin(),
             eit = pag->getCallSiteArgsMap().end(); it!=eit; ++it)
     {
-
         PTACallGraph::FunctionSet callees;
         getCallgraph()->getCallees(it->first,callees);
         for(PTACallGraph::FunctionSet::const_iterator cit = callees.begin(), ecit = callees.end(); cit!=ecit; cit++)
@@ -112,6 +125,32 @@ void TaintChecker::initSnks()
     }
 }
 
+void TaintChecker::reportTaint2(const SVFGNode* src, const SVFGNodeSet& sinks)
+{
+    for (SVFGNodeSet::const_iterator it = sinks.begin(), eit = sinks.end();
+            it!=eit; ++it)
+    {
+        const SVFGNode* node = *it;
+        std::string sinkName = getSinkFunName(node);
+        ParamTypeToPos::iterator it1;
+        for (it1 = paramTypeToPosMap.begin(); it1 != paramTypeToPosMap.end(); ++it1)
+        {
+            std::vector<int> pos = it1->second;
+            for(std::vector<int>::iterator it2 = pos.begin(); it2 != pos.end(); ++it2)
+            {
+                if (sinkName == "RetValue")
+                {
+                    JsonReaderWriter::getJsonReaderWriter()->writeResultToYaml(*it2, currentNativeCallee);
+                }
+                else
+                {
+                    SVFUtil::errs() << bugMsg2("TaintLeak at: ");
+                    std::cout << sinkName << "()" << " pos: " << *it2 << std::endl;
+                }      
+            }
+        }  
+    }
+}
 
 void TaintChecker::reportTaint(const SVFGNode* src, const SVFGNodeSet& sinks)
 {
@@ -120,9 +159,9 @@ void TaintChecker::reportTaint(const SVFGNode* src, const SVFGNodeSet& sinks)
     {
         const SVFGNode* node = *it;
         std::string sinkName = getSinkFunName(node);
+        const u32_t pos = getSrcParmPos(src);
         if (sinkName == "RetValue")
         {
-            const u32_t pos = getSrcParmPos(src);
             JsonReaderWriter::getJsonReaderWriter()->writeResultToYaml(pos, currentNativeCallee);
         }
         else
@@ -137,10 +176,10 @@ void TaintChecker::reportBug(ProgSlice* slice)
 {
     if(isAllPathReachable() == true)
     {
-        reportTaint(slice->getSource(), slice->getSinks());
+        reportTaint2(slice->getSource(), slice->getSinks());
     }else if(isSomePathReachable() == true)
     {
-        reportTaint(slice->getSource(), slice->getSinks());
+        reportTaint2(slice->getSource(), slice->getSinks());
     }
 }
 
